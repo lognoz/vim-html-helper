@@ -71,6 +71,8 @@ function! s:region(start_mark, end_mark)
 	return [s:pos(a:start_mark), s:pos(a:end_mark)]
 endfunction
 
+" Return the content by selection.
+" If mode is visual, selection is copying in register "a to be return
 function! s:content()
 	if s:triggered_mode ==# 'n'
 		return getline('.')
