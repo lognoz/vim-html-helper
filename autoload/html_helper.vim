@@ -204,10 +204,11 @@ function! html_helper#apply()
 		return s:display_warning("No match found")
  	endif
 
+	" Getting tags
+	let tags = s:extract_tags(s:cm.content)
+
 	call s:cm.debug()
 
-"	" Getting tags
-"	let tags = s:extract_tags(s:cm.content)
 "	call s:cm.define('tags', tags)
 "	if len(tags) == 0
 "		return s:display_warning("No html tag found")
