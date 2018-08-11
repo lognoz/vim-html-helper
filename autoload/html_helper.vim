@@ -228,13 +228,13 @@ function! html_helper#apply()
 	" Else a directory will be store for every tag
 	call s:cm.define('tags', s:extract_tags(s:cm.content))
 
+
+	if len(tags) == 0
+		return s:display_warning("No html tag found")
+	endif
+
 	call s:cm.debug()
 
-"	call s:cm.define('tags', tags)
-"	if len(tags) == 0
-"		return s:display_warning("No html tag found")
-"	endif
-"
 "	" Parse content
 "	let content = s:parse_content()
 "	call s:select_in_visual_mode()
