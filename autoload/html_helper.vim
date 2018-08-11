@@ -35,6 +35,17 @@ function! s:ContextualManager.define(param, value) dict
 	let self[a:param] = a:value
 endfunction
 
+" Debug helpers
+function! s:ContextualManager.debug() dict
+	echom 'position [line, column]:'
+	echom '  start = [' . self.selection[0][0] . ', ' . self.selection[0][1] . ']'
+	echom '  end = [' . self.selection[1][0] . ', ' . self.selection[1][1] . ']'
+	echom 'tags [position, length]:'
+	for tag in self.tags
+		echom '  <' . tag.name . '> = [' . tag.position . ', ' . tag.length . ']'
+	endfor
+endfunction
+
 "===============================================================================
 " Variables
 "===============================================================================
