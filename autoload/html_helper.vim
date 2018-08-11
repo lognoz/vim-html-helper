@@ -2,8 +2,8 @@
 " Internal Mappings
 "===============================================================================
 
-nnoremap <silent> <Plug>(html-helper-apply-multiline) :call <SID>apply_multiline()<CR>
-xnoremap <silent> <Plug>(html-helper-apply-multiline) :<C-u>call <SID>apply_multiline()<CR>
+nnoremap <silent> <Plug>(html-helper-apply-multiline) :call html_helper#apply()<CR>
+xnoremap <silent> <Plug>(html-helper-apply-multiline) :<C-u>call html_helper#apply()<CR>
 
 "===============================================================================
 " Contextual class
@@ -170,7 +170,17 @@ function! s:select_in_visual_mode()
 	endif
 endfunction
 
-function! s:apply_multiline()
+"===============================================================================
+" Public functions
+"===============================================================================
+
+function! html_helper#multiline(mode)
+	let s:triggered_mode = a:mode
+	call feedkeys("\<Plug>(html-helper-apply-multiline)")
+	call s:cm.reset()
+endfunction
+
+function! html_helper#apply()
 	" Disabled visual block mode and output error message in this case
 	" Stop the process of the function by returning 0
 	if s:triggered_mode ==# 'v'
@@ -204,14 +214,4 @@ function! s:apply_multiline()
 "	normal! c
 "	call append(line('.'), content)
 "	normal! dd
-endfunction
-
-"===============================================================================
-" Public functions
-"===============================================================================
-
-function! html_helper#multiline(mode)
-	let s:triggered_mode = a:mode
-	call feedkeys("\<Plug>(html-helper-apply-multiline)")
-	call s:cm.reset()
 endfunction
