@@ -137,7 +137,6 @@ function! s:extract_tags(content)
 		endif
 		" Remove all attributes in match found
 		" <p class="a"> will be p and </p> will be /p
-		" Backslash is keep to manage closed and unclosed characters
 		let name = matchstr(match, '<\zs/\?\%([[:alpha:]_:]\|[^\x00-\x7F]\)\%([-._:[:alnum:]]\|[^\x00-\x7F]\)*')
 		let position = match(a:content, '<[^<>]*>', 0, cpt)
 		" If first character egale backslash a condition is executed to verify
@@ -244,12 +243,12 @@ function! html_helper#apply()
 		return s:display_warning("No html tag found")
 	endif
 
-	call s:cm.debug()
+	"call s:cm.debug()
 
-"	" Parse content
-"	let content = s:parse_content()
-"	call s:select_in_visual_mode()
-"	normal! c
-"	call append(line('.'), content)
-"	normal! dd
+	" Parse content
+	let content = s:parse_content()
+	call s:select_in_visual_mode()
+	normal! c
+	call append(line('.'), content)
+	normal! dd
 endfunction
