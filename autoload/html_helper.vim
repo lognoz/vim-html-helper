@@ -71,6 +71,16 @@ function! s:region(start_mark, end_mark)
 	return [s:pos(a:start_mark), s:pos(a:end_mark)]
 endfunction
 
+function! s:content()
+	if s:triggered_mode ==# 'n'
+		return getline('.')
+	else
+		let a_save = @a
+		normal! gv"ay
+		return @a
+	endif
+endfunction
+
 " Return the position of the selection by triggered mode. First element is the
 " line number, second element is the column number
 function! s:selection()
@@ -124,16 +134,6 @@ function! s:extract_tags(content)
 			\ })
 	endwhile
 	return tags
-endfunction
-
-function! s:content()
-	if s:triggered_mode ==# 'n'
-		return getline('.')
-	else
-		let a_save = @a
-		normal! gv"ay
-		return @a
-	endif
 endfunction
 
 function! s:parse_content()
