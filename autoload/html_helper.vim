@@ -180,24 +180,26 @@ function! s:apply_multiline()
 	call s:cm.define('selection', s:selection())
 	call s:cm.define('content', s:content())
 
-	" Verify selection is empty lines
-	if s:cm.selection[0] == s:cm.selection[1]
-		return s:display_warning("No match found")
-	endif
+	call s:cm.debug()
 
-	" Getting tags
-	let tags = s:extract_tags(s:cm.content)
-	call s:cm.define('tags', tags)
-	if len(tags) == 0
-		return s:display_warning("No html tag found")
-	endif
-
-	" Parse content
-	let content = s:parse_content()
-	call s:select_in_visual_mode()
-	normal! c
-	call append(line('.'), content)
-	normal! dd
+"	" Verify selection is empty lines
+"	if s:cm.selection[0] == s:cm.selection[1]
+"		return s:display_warning("No match found")
+"	endif
+"
+"	" Getting tags
+"	let tags = s:extract_tags(s:cm.content)
+"	call s:cm.define('tags', tags)
+"	if len(tags) == 0
+"		return s:display_warning("No html tag found")
+"	endif
+"
+"	" Parse content
+"	let content = s:parse_content()
+"	call s:select_in_visual_mode()
+"	normal! c
+"	call append(line('.'), content)
+"	normal! dd
 endfunction
 
 "===============================================================================
