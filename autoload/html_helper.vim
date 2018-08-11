@@ -171,7 +171,8 @@ function! s:select_in_visual_mode()
 endfunction
 
 function! s:apply_multiline()
-	" Show error message if it's visual block
+	" Disabled visual block mode and output error message in this case
+	" Stop the process of the function by returning 0
 	if s:triggered_mode ==# 'v'
 		let visual = visualmode()
 		if visual != 'v' && visual != 'V'
