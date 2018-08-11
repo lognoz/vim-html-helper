@@ -226,7 +226,7 @@ function! html_helper#apply()
 	" Extract tags from selection content
 	" If none have been found [] will be returns
 	" Else a directory will be store for every tag
-	let tags = s:extract_tags(s:cm.content)
+	call s:cm.define('tags', s:extract_tags(s:cm.content))
 
 	call s:cm.debug()
 
