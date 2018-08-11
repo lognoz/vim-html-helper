@@ -71,16 +71,26 @@ function! s:region(start_mark, end_mark)
 	return [s:pos(a:start_mark), s:pos(a:end_mark)]
 endfunction
 
+" Strip whitespace (or other characters) from the beginning and end of a string
+function! s:trim(string)
+	let final = ''
+	for line in split(a:string, '\n')
+		let final .= substitute(line, '^\s*\(.\{-}\)\s*$', '\1', '') . "\n"
+	endfor
+	return final
+endfunction
+
 " Return the content by selection.
 " If mode is visual, selection is copying in register "a to be return
 function! s:content()
 	if s:triggered_mode ==# 'n'
-		return getline('.')
+		let string = getline('.')
 	else
 		let a_save = @a
 		normal! gv"ay
-		return @a
+		let string = @a
 	endif
+	return s:trim(string)
 endfunction
 
 " Return the position of the selection by triggered mode. First element is the
