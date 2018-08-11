@@ -174,6 +174,8 @@ endfunction
 " Public functions
 "===============================================================================
 
+" Set triggered mode and call function html_helper#apply with feedkeys
+" At the end contextual manager is reseted
 function! html_helper#multiline(mode)
 	let s:triggered_mode = a:mode
 	call feedkeys("\<Plug>(html-helper-apply-multiline)")
