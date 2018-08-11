@@ -30,6 +30,10 @@ function! s:ContextualManager.reset() dict
 	let self.tags = []
 endfunction
 
+function! s:ContextualManager.define(param, value) dict
+	let self[a:param] = a:value
+endfunction
+
 "===============================================================================
 " Variables
 "===============================================================================
@@ -153,15 +157,18 @@ function! s:apply_multiline()
 	endif
 
 	" Set position by visual mode to contextual manager
-	let s:cm.selection = s:selection()
-	let s:cm.content = s:content()
+	call s:cm.define('selection', s:selection())
+	call s:cm.define('content', s:content())
+
+	" Verify selection is empty lines
 	if s:cm.selection[0] == s:cm.selection[1]
 		return s:display_warning("No match found")
 	endif
 
 	" Getting tags
-	let s:cm.tags = s:extract_tags(s:cm.content)
-	if len(s:cm.tags) == 0
+	let tags = s:extract_tags(s:cm.content)
+	call s:cm.define('tags', tags)
+	if len(tags) == 0
 		return s:display_warning("No html tag found")
 	endif
 
