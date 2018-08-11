@@ -200,9 +200,9 @@ function! html_helper#apply()
 	call s:cm.define('content', s:content())
 
 	" Verify selection is empty lines
-	if s:cm.selection[0] == s:cm.selection[1]
+ 	if substitute(s:cm.content, '\t\n\+$', '', '') == ''
 		return s:display_warning("No match found")
-	endif
+ 	endif
 
 	call s:cm.debug()
 
