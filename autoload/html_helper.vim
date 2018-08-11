@@ -193,9 +193,8 @@ function! html_helper#apply()
 	endif
 
 	" Define selection and content by triggered mode to contextual manager
-	" 'content': s:content() function return selection content
-	" 'selection': s:selection() function will return an array of positions
-	" [start_line, start_column], [end_line, end_column]
+	" content: s:content() function return selection content
+	" selection: s:selection() function will return an array of positions
 	call s:cm.define('selection', s:selection())
 	call s:cm.define('content', s:content())
 
