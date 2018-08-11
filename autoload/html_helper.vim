@@ -106,18 +106,33 @@ function! s:display_warning(feedback)
 	echohl WarningMsg | echo a:feedback | echohl None
 endfunction
 
+" Extracting tags from string
+" Return an array of tags found
+" If no one was found [] will be return
 function! s:extract_tags(content)
+	" Counter that will be use to matchstr tags
 	let cpt = 0
+	" List of tags found
 	let tags = []
+	" List of tags unclosed
 	let unclose = {}
+	" Loop until we can't found new match tag
+	" If match is empty the loop will be breaks
 	while 1
 		let cpt += 1
+		" Match tags in the content
 		let match = matchstr(a:content, '<[^<>]*>', 0, cpt)
 		if match == ''
 			break
 		endif
+		" Remove all attributes in match found
+		" <p class="a"> will be p and </p> will be /p
+		" Backslash is keep to manage closed and unclosed characters
 		let name = matchstr(match, '<\zs/\?\%([[:alpha:]_:]\|[^\x00-\x7F]\)\%([-._:[:alnum:]]\|[^\x00-\x7F]\)*')
 		let position = match(a:content, '<[^<>]*>', 0, cpt)
+		" If first character egale backslash a condition is executed to verify
+		" if this tags has parent in unclose variable. If key exist the close
+		" tag will be added to the parent
 		if name[0] == '/'
 			let key = name[1:]
 			if has_key(unclose, name[1:])
@@ -129,6 +144,10 @@ function! s:extract_tags(content)
 				\ 'cpt': cpt-1
 				\ }
 		endif
+		" Add information about tag found
+		" name: name of the tag that have been found (p or /p)
+		" position: position start of the match
+		" length: length of the match
 		call add(tags, {
 			\ 'name': name,
 			\ 'position': position,
