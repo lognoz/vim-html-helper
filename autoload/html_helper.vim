@@ -30,6 +30,7 @@ function! s:ContextualManager.reset() dict
 	let self.tags = []
 endfunction
 
+" Define class attribute
 function! s:ContextualManager.define(param, value) dict
 	let self[a:param] = a:value
 endfunction
@@ -47,14 +48,20 @@ let s:cm = s:ContextualManager.new()
 " Utility functions
 "===============================================================================
 
+" Return the position of the input marker as array. First element is the line
+" number, second element is the column number
 function! s:pos(mark)
 	return [line(a:mark), col(a:mark)-1]
 endfunction
 
+" Return the position of the input marker as array. First element is the start
+" marker position, second last marker position
 function! s:region(start_mark, end_mark)
 	return [s:pos(a:start_mark), s:pos(a:end_mark)]
 endfunction
 
+" Return the position of the selection by triggered mode. First element is the
+" line number, second element is the column number
 function! s:selection()
 	if s:triggered_mode ==# 'n'
 		let selection = s:region(".", "$")
@@ -65,10 +72,12 @@ function! s:selection()
 	endif
 endfunction
 
+" Output error message
 function! s:display_error(feedback)
 	echohl ErrorMsg | echo a:feedback | echohl None
 endfunction
 
+" Output warning message
 function! s:display_warning(feedback)
 	echohl WarningMsg | echo a:feedback | echohl None
 endfunction
