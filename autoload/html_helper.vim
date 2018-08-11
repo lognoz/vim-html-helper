@@ -198,7 +198,8 @@ function! html_helper#apply()
 	call s:cm.define('selection', s:selection())
 	call s:cm.define('content', s:content())
 
-	" Verify selection is empty lines
+	" Output warning message if selection content is empty after triming
+	" Stop the process of the function by returning 0
  	if substitute(s:cm.content, '\t\n\+$', '', '') == ''
 		return s:display_warning("No match found")
  	endif
