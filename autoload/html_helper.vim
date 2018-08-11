@@ -199,13 +199,13 @@ function! html_helper#apply()
 	call s:cm.define('selection', s:selection())
 	call s:cm.define('content', s:content())
 
+	" Verify selection is empty lines
+	if s:cm.selection[0] == s:cm.selection[1]
+		return s:display_warning("No match found")
+	endif
+
 	call s:cm.debug()
 
-"	" Verify selection is empty lines
-"	if s:cm.selection[0] == s:cm.selection[1]
-"		return s:display_warning("No match found")
-"	endif
-"
 "	" Getting tags
 "	let tags = s:extract_tags(s:cm.content)
 "	call s:cm.define('tags', tags)
