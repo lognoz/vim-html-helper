@@ -228,8 +228,7 @@ function! html_helper#apply()
 	" Else a directory will be store for every tag
 	call s:cm.define('tags', s:extract_tags(s:cm.content))
 
-
-	if len(tags) == 0
+	if len(s:cm.tags) == 0
 		return s:display_warning("No html tag found")
 	endif
 
