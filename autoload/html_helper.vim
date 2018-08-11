@@ -75,8 +75,9 @@ endfunction
 " line number, second element is the column number
 function! s:selection()
 	if s:triggered_mode ==# 'n'
-		let selection = s:region(".", "$")
+		let selection = s:region(".", ".")
 		let selection[0][1] = 0
+		let selection[1][1] = len(getline("."))
 		return selection
 	else
 		return s:region("'<", "'>")
