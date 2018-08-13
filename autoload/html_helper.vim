@@ -62,13 +62,19 @@ let s:cm = s:ContextualManager.new()
 " Return the position of the input marker as array. First element is the line
 " number, second element is the column number
 function! s:pos(mark)
-	return [line(a:mark), col(a:mark)]
+	return {
+		\ 'line': line(a:mark),
+		\ 'col': col(a:mark)
+		\ }
 endfunction
 
 " Return the position of the input marker as array. First element is the start
 " marker position, second last marker position
 function! s:region(start_mark, end_mark)
-	return [s:pos(a:start_mark), s:pos(a:end_mark)]
+	return {
+		\ 'begin': s:pos(a:start_mark),
+		\ 'end': s:pos(a:end_mark)
+		\ }
 endfunction
 
 " Strip whitespace (or other characters) from the beginning and end of a string
