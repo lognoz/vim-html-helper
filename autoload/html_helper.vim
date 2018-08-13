@@ -103,10 +103,9 @@ endfunction
 " line number, second element is the column number
 function! s:selection()
 	if s:triggered_mode ==# 'n'
-		return  [
-		\ [line('.'), 1],
-		\ [line('.'), col("$")]
-		\ ]
+		let begin = { 'line': line('.'), 'col': 1 }
+		let end = { 'line': line('.'), 'col': col("$") }
+		return { 'begin': begin, 'end': end }
 	else
 		return s:region("'<", "'>")
 	endif
@@ -172,23 +171,39 @@ function! s:extract_tags(content)
 	return tags
 endfunction
 
-function! s:parse_content()
-	let content = s:cm.content
+function! s:parse_content(content, tags, selection)
 	let lines = []
 	let position = 0
-	let indent = 0
-	for tag in s:cm.tags
+
+	" If line is not fully selected
+	if a:selection['begin']['col'] > 1
+		let string = strpart(getline(a:selection['begin']['line']), 0, a:selection['begin']['col'] - 1)
+		let string = substitute(string, '^\s*\(.\{-}\)\s*$', '\1', '')
+		if string != ''
+			call add(lines, string)
+		endif
+	endif
+
+	for tag in a:tags
 		if tag['position'] > position
-			let string = strpart(content, position, tag['position'] - position)
+			let string = strpart(a:content, position, tag['position'] - position)
 			for line in split(string, '\n')
 				call add(lines, line)
 			endfor
 		endif
 		let position = tag['position'] + tag['length']
-		call add(lines, strpart(content, tag['position'], tag['length']))
+		call add(lines, strpart(a:content, tag['position'], tag['length']))
 	endfor
-	if (len(content) > position)
-		let string = strpart(content, position, len(content))
+
+	" If line is not fully selected
+	if a:selection['end']['col'] < len(getline(a:selection['end']['line'])) + 1
+		let string = strpart(getline(a:selection['end']['line']), a:selection['end']['col'])
+		let string = substitute(string, '^\s*\(.\{-}\)\s*$', '\1', '')
+		call add(lines, string)
+	endif
+
+	if (len(a:content) > position)
+		let string = strpart(a:content, position, len(a:content))
 		for line in split(string, '\n')
 			call add(lines, line)
 		endfor
@@ -252,7 +267,7 @@ function! html_helper#apply()
 	"call s:cm.debug()
 
 	" Parse content
-	let content = s:parse_content()
+	let content = s:parse_content(s:cm.content, s:cm.tags, s:cm.selection)
 	call s:select_in_visual_mode()
 	normal! c
 	call append(line('.'), content)
