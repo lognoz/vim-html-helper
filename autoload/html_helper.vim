@@ -62,7 +62,7 @@ let s:cm = s:ContextualManager.new()
 " Return the position of the input marker as array. First element is the line
 " number, second element is the column number
 function! s:pos(mark)
-	return [line(a:mark), col(a:mark)-1]
+	return [line(a:mark), col(a:mark)]
 endfunction
 
 " Return the position of the input marker as array. First element is the start
@@ -97,10 +97,10 @@ endfunction
 " line number, second element is the column number
 function! s:selection()
 	if s:triggered_mode ==# 'n'
-		let selection = s:region(".", ".")
-		let selection[0][1] = 0
-		let selection[1][1] = len(getline("."))
-		return selection
+		return  [
+		\ [line('.'), 1],
+		\ [line('.'), col("$")]
+		\ ]
 	else
 		return s:region("'<", "'>")
 	endif
