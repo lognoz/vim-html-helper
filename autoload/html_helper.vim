@@ -148,6 +148,7 @@ function! s:fix_indent(string, indent)
 	return repeat(s:indentation, a:indent).a:string
 endfunction
 
+" Replace the selection by the parsed content
 function! s:replace_selection(content)
 	call s:select_in_visual_mode()
 	execute "normal! c"
