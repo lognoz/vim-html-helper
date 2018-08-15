@@ -97,9 +97,7 @@ function! s:content()
 	if s:triggered_mode ==# 'n'
 		let string = getline('.')
 	else
-		let a_save = @a
-		normal! gv"ay
-		let string = @a
+		let string = @*
 	endif
 	return s:trim(string)
 endfunction
