@@ -150,9 +150,9 @@ endfunction
 
 function! s:replace_selection(content)
 	call s:select_in_visual_mode()
-	normal! c
+	execute "normal! c"
 	call append(line('.'), a:content)
-	normal! dd
+	execute "normal! dd"
 endfunction
 
 " Extracting tags from string
