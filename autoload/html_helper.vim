@@ -54,6 +54,11 @@ endfunction
 let s:triggered_mode = ''
 " Singleton of contextual manager instance
 let s:cm = s:ContextualManager.new()
+" List of self-closing tags
+let s:self_closing_tags = [
+	\ 'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input',
+	\ 'keygen', 'link', 'menuitem', 'meta', 'param', 'source', 'track', 'wbr'
+	\ ]
 
 "===============================================================================
 " Utility functions
