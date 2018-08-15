@@ -148,6 +148,13 @@ function! s:fix_indent(string, indent)
 	return repeat(s:indentation, a:indent).a:string
 endfunction
 
+function! s:replace_selection(content)
+	call s:select_in_visual_mode()
+	normal! c
+	call append(line('.'), a:content)
+	normal! dd
+endfunction
+
 " Extracting tags from string
 " Return an array of tags found
 " If no one was found [] will be return
@@ -296,9 +303,7 @@ function! html_helper#apply()
 	endif
 
 	" Parse content
-	let content = s:parse_content(s:cm.content, s:cm.tags, s:cm.selection)
-	call s:select_in_visual_mode()
-	normal! c
-	call append(line('.'), content)
-	normal! dd
+	call s:replace_selection(
+		\ s:parse_content(s:cm.content, s:cm.tags, s:cm.selection)
+		\ )
 endfunction
