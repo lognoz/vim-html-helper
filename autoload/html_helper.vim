@@ -176,6 +176,8 @@ function! s:extract_tags(content)
 	return tags
 endfunction
 
+" Add tab before a string content. In function, s:indentation variable is
+" referring document indentation character type
 function! s:fix_indent(string, indent)
 	return repeat(s:indentation, a:indent).a:string
 endfunction
