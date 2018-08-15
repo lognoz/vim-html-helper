@@ -176,9 +176,14 @@ function! s:extract_tags(content)
 	return tags
 endfunction
 
+function! s:fix_indent(string, indent)
+	return repeat(s:indentation, a:indent).a:string
+endfunction
+
 function! s:parse_content(content, tags, selection)
 	let lines = []
 	let position = 0
+	let indent = 0
 
 	" If line is not fully selected
 	if a:selection['begin']['col'] > 1
@@ -193,11 +198,20 @@ function! s:parse_content(content, tags, selection)
 		if tag['position'] > position
 			let string = strpart(a:content, position, tag['position'] - position)
 			for line in split(string, '\n')
-				call add(lines, line)
+				call add(lines, s:fix_indent(line, indent))
 			endfor
 		endif
+
+		if tag['name'][0] == '/'
+			let indent = indent - 1
+		endif
+
 		let position = tag['position'] + tag['length']
-		call add(lines, strpart(a:content, tag['position'], tag['length']))
+		call add(lines, s:fix_indent(strpart(a:content, tag['position'], tag['length']), indent))
+
+		if tag['name'][0] != '/' && index(s:self_closing_tags, tag['name']) == -1
+			let indent = indent + 1
+		endif
 	endfor
 
 	" If line is not fully selected
