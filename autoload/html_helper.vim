@@ -156,6 +156,16 @@ function! s:replace_selection(content)
 	execute "normal! dd"
 endfunction
 
+function! s:extract_indentation(selection)
+	let indentation = []
+	let begin = a:selection['begin']
+	let end = a:selection['end']
+	for line in range(begin['line'], end['line'])
+		call add(indentation, matchstr(getline(line), '^\s\+'))
+	endfor
+	return indentation
+endfunction
+
 " Extracting tags from string
 " Return an array of tags found
 " If no one was found [] will be return
@@ -285,6 +295,7 @@ function! html_helper#apply()
 	let content = s:content()
 	call s:cm.define('selection', s:selection())
 	call s:cm.define('content', s:trim(content))
+	call s:cm.define('indentation', s:extract_indentation(s:cm.selection))
 
 	" Output warning message if selection content is empty after triming
 	" Stop the process of the function by returning 0
