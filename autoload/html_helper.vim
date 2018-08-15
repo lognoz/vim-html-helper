@@ -232,9 +232,9 @@ endfunction
 
 function! s:select_in_visual_mode()
 	if s:triggered_mode ==# 'v'
-		normal! gv
+		execute "normal! gv"
 	else
-		normal! V
+		execute "normal! V"
 	endif
 endfunction
 
