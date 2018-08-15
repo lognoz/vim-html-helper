@@ -54,6 +54,8 @@ endfunction
 let s:triggered_mode = ''
 " Singleton of contextual manager instance
 let s:cm = s:ContextualManager.new()
+" Identation characters detected by user parameters
+let s:indentation = "\n"
 " List of self-closing tags
 let s:self_closing_tags = [
 	\ 'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input',
@@ -222,6 +224,12 @@ function! s:select_in_visual_mode()
 	endif
 endfunction
 
+function! s:get_indentation()
+	let sw = exists('*shiftwidth') ? shiftwidth() : &l:shiftwidth
+	let indent = (&l:expandtab || &l:tabstop !=# sw) ? repeat(' ', sw) : "\t"
+	return indent
+endfunction
+
 "===============================================================================
 " Public functions
 "===============================================================================
@@ -230,6 +238,7 @@ endfunction
 " At the end contextual manager is reseted
 function! html_helper#multiline(mode)
 	let s:triggered_mode = a:mode
+	let s:indentation = s:get_indentation()
 	call feedkeys("\<Plug>(html-helper-apply-multiline)")
 	call s:cm.reset()
 endfunction
