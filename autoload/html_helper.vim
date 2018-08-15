@@ -126,6 +126,29 @@ function! s:display_warning(feedback)
 	echohl WarningMsg | echo a:feedback | echohl None
 endfunction
 
+" Add visual selection by triggered mode
+" If it's normal mode, current line will be selected
+function! s:select_in_visual_mode()
+	if s:triggered_mode ==# 'v'
+		execute "normal! gv"
+	else
+		execute "normal! V"
+	endif
+endfunction
+
+" Get indentation from document setting
+function! s:get_document_indentation()
+	let sw = exists('*shiftwidth') ? shiftwidth() : &l:shiftwidth
+	let indent = (&l:expandtab || &l:tabstop !=# sw) ? repeat(' ', sw) : "\t"
+	return indent
+endfunction
+
+" Add tab before a string content. In function, s:indentation variable is
+" referring document indentation character type
+function! s:fix_indent(string, indent)
+	return repeat(s:indentation, a:indent).a:string
+endfunction
+
 " Extracting tags from string
 " Return an array of tags found
 " If no one was found [] will be return
@@ -176,12 +199,6 @@ function! s:extract_tags(content)
 	return tags
 endfunction
 
-" Add tab before a string content. In function, s:indentation variable is
-" referring document indentation character type
-function! s:fix_indent(string, indent)
-	return repeat(s:indentation, a:indent).a:string
-endfunction
-
 function! s:parse_content(content, tags, selection)
 	let lines = []
 	let position = 0
@@ -230,23 +247,6 @@ function! s:parse_content(content, tags, selection)
 		endfor
 	endif
 	return lines
-endfunction
-
-" Add visual selection by triggered mode
-" If it's normal mode, current line will be selected
-function! s:select_in_visual_mode()
-	if s:triggered_mode ==# 'v'
-		execute "normal! gv"
-	else
-		execute "normal! V"
-	endif
-endfunction
-
-" Get indentation from document setting
-function! s:get_document_indentation()
-	let sw = exists('*shiftwidth') ? shiftwidth() : &l:shiftwidth
-	let indent = (&l:expandtab || &l:tabstop !=# sw) ? repeat(' ', sw) : "\t"
-	return indent
 endfunction
 
 "===============================================================================
