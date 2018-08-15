@@ -240,7 +240,7 @@ function! s:select_in_visual_mode()
 	endif
 endfunction
 
-function! s:get_indentation()
+function! s:get_document_indentation()
 	let sw = exists('*shiftwidth') ? shiftwidth() : &l:shiftwidth
 	let indent = (&l:expandtab || &l:tabstop !=# sw) ? repeat(' ', sw) : "\t"
 	return indent
@@ -254,7 +254,7 @@ endfunction
 " At the end contextual manager is reseted
 function! html_helper#multiline(mode)
 	let s:triggered_mode = a:mode
-	let s:indentation = s:get_indentation()
+	let s:indentation = s:get_document_indentation()
 	call feedkeys("\<Plug>(html-helper-apply-multiline)")
 	call s:cm.reset()
 endfunction
