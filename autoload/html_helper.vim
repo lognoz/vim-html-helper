@@ -94,7 +94,7 @@ function! s:trim(...)
 endfunction
 
 " Return the content by selection.
-" If mode is visual, selection is copying in register "a to be return
+" If mode is visual, selection is getting in register * to be return
 function! s:content()
 	if s:triggered_mode ==# 'n'
 		return getline('.')
