@@ -242,6 +242,7 @@ function! s:select_in_visual_mode()
 	endif
 endfunction
 
+" Get indentation from document setting
 function! s:get_document_indentation()
 	let sw = exists('*shiftwidth') ? shiftwidth() : &l:shiftwidth
 	let indent = (&l:expandtab || &l:tabstop !=# sw) ? repeat(' ', sw) : "\t"
