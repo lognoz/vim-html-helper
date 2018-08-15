@@ -280,9 +280,9 @@ function! html_helper#apply()
 
 	" Output warning message if selection content is empty after triming
 	" Stop the process of the function by returning 0
- 	if substitute(s:cm.content, '\t\n\+$', '', '') == ''
+	if substitute(s:cm.content, '\t\n\+$', '', '') == ''
 		return s:display_warning("No match found")
- 	endif
+	endif
 
 	" Extract tags from selection content
 	" If none have been found [] will be returns
