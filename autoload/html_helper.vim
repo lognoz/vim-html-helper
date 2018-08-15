@@ -232,6 +232,8 @@ function! s:parse_content(content, tags, selection)
 	return lines
 endfunction
 
+" Add visual selection by triggered mode
+" If it's normal mode, current line will be selected
 function! s:select_in_visual_mode()
 	if s:triggered_mode ==# 'v'
 		execute "normal! gv"
