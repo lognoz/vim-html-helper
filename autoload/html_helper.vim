@@ -157,7 +157,7 @@ function! s:replace_selection(content)
 	execute "normal! dd"
 endfunction
 
-function! s:extract_indentation(selection)
+function! s:extract_indent(selection)
 	let indentation = []
 	let begin = a:selection['begin']
 	let end = a:selection['end']
@@ -294,8 +294,8 @@ function! html_helper#apply()
 	" content: s:content() function return selection content
 	" selection: s:selection() function will return an array of positions
 	call s:cm.define('selection', s:selection())
+	call s:cm.define('indentation', s:extract_indent(s:cm.selection))
 	call s:cm.define('content', s:content())
-	call s:cm.define('indentation', s:extract_indentation(s:cm.selection))
 
 	" Output warning message if selection content is empty after triming
 	" Stop the process of the function by returning 0
