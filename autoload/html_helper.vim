@@ -295,8 +295,6 @@ function! html_helper#apply()
 		return s:display_warning("No html tag found")
 	endif
 
-	"call s:cm.debug()
-
 	" Parse content
 	let content = s:parse_content(s:cm.content, s:cm.tags, s:cm.selection)
 	call s:select_in_visual_mode()
