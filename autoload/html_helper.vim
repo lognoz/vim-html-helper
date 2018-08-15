@@ -97,10 +97,11 @@ endfunction
 " If mode is visual, selection is getting in register * to be return
 function! s:content()
 	if s:triggered_mode ==# 'n'
-		return getline('.')
+		let string = getline('.')
 	else
-		return @*
+		let string = @*
 	endif
+	return s:trim(string)
 endfunction
 
 " Return the position of the selection by triggered mode. First element is the
