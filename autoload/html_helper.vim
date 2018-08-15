@@ -50,10 +50,10 @@ endfunction
 " Variables
 "===============================================================================
 
-" This is the mode the user is in after s:char
-let s:triggered_mode = ''
 " Singleton of contextual manager instance
 let s:cm = s:ContextualManager.new()
+" This is the mode the user is in after s:char
+let s:triggered_mode = ''
 " Identation characters detected by user parameters
 let s:indentation = "\n"
 " List of self-closing tags
