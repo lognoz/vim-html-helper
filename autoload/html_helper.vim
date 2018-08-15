@@ -274,8 +274,9 @@ function! html_helper#apply()
 	" Define selection and content by triggered mode to contextual manager
 	" content: s:content() function return selection content
 	" selection: s:selection() function will return an array of positions
+	let content = s:content()
 	call s:cm.define('selection', s:selection())
-	call s:cm.define('content', s:content())
+	call s:cm.define('content', s:trim(content))
 
 	" Output warning message if selection content is empty after triming
 	" Stop the process of the function by returning 0
