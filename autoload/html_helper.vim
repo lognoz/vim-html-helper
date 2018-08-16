@@ -167,6 +167,16 @@ function! s:extract_indent(selection)
 	return indentation
 endfunction
 
+function! s:extract_line_break(content)
+	let lines = []
+	let position = -1
+	for line in split(a:content, "\n")
+		let position += len(line)
+		call add(lines, position)
+	endfor
+	return lines
+endfunction
+
 " Extracting tags from string
 " Return an array of tags found
 " If no one was found [] will be return
@@ -296,6 +306,7 @@ function! html_helper#apply()
 	call s:cm.define('selection', s:selection())
 	call s:cm.define('indentation', s:extract_indent(s:cm.selection))
 	call s:cm.define('content', s:content())
+	call s:cm.define('line_break', s:extract_line_break(s:cm.content))
 
 	" Output warning message if selection content is empty after triming
 	" Stop the process of the function by returning 0
