@@ -223,10 +223,12 @@ function! s:lines(selection, content)
 	return lines
 endfunction
 
+" Verify if select to start
 function! s:select_to_start(selection)
 	return a:selection['begin']['col'] > 1
 endfunction
 
+" Verify if select to end
 function! s:select_to_end(selection)
 	return a:selection['end']['col'] < len(getline(a:selection['end']['line'])) + 1
 endfunction
