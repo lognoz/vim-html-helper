@@ -157,6 +157,7 @@ function! s:replace_selection(content)
 	execute "normal! dd"
 endfunction
 
+" Get indentation from line number
 function! s:extract_indent(line)
 	return matchstr(getline(a:line), '^\s\+')
 endfunction
