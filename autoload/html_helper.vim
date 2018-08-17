@@ -193,10 +193,9 @@ function! s:extract_tags(content)
 				let tags[name[1:]]['close'] = cpt-1
 			endif
 		else
-			let unclose[name] = {
-				\ 'position': position,
-				\ 'cpt': cpt-1
-				\ }
+			let unclose[name] = {}
+			let unclose[name]['position'] = position
+			let unclose[name]['cpt'] = cpt-1
 		endif
 		" Add information about tag found
 		" name: name of the tag that have been found (p or /p)
