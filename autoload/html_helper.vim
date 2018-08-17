@@ -365,7 +365,7 @@ function! html_helper#apply()
 
 	" Output warning message if no tags have been found
 	" Stop the process of the function by returning 0
-	if len(s:cm.tags) == 0
+	if tags_exist == 0
 		return s:display_warning("No html tag found")
 	endif
 
