@@ -356,6 +356,8 @@ function! html_helper#apply()
 	let lines = []
 	let tags_exist = 0
 	for parameters in s:lines(s:cm.selection, s:cm.content)
+		" Extract tags from selection content
+		" If none have been found [] will be returns
 		let tags = s:extract_tags(parameters['content'])
 		let lines += s:parse_lines(parameters, tags)
 		if tags != []
