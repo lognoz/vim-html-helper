@@ -157,14 +157,8 @@ function! s:replace_selection(content)
 	execute "normal! dd"
 endfunction
 
-function! s:extract_indent(selection)
-	let indentation = []
-	let begin = a:selection['begin']
-	let end = a:selection['end']
-	for line in range(begin['line'], end['line'])
-		call add(indentation, matchstr(getline(line), '^\s\+'))
-	endfor
-	return indentation
+function! s:extract_indent(line)
+	return matchstr(getline(a:line), '^\s\+')
 endfunction
 
 function! s:extract_line_break(content)
