@@ -320,16 +320,15 @@ function! html_helper#apply()
 	" Extract tags from selection content
 	" If none have been found [] will be returns
 	" Else a directory will be store for every tag
-	call s:cm.define('tags', s:extract_tags(s:cm.content))
+	"call s:cm.define('tags', s:extract_tags(s:cm.content))
 
 	" Output warning message if no tags have been found
 	" Stop the process of the function by returning 0
-	if len(s:cm.tags) == 0
-		return s:display_warning("No html tag found")
-	endif
+	"if len(s:cm.tags) == 0
+	"	return s:display_warning("No html tag found")
+	"endif
 
 	" Parse content
-	call s:replace_selection(
-		\ s:parse_content(s:cm.content, s:cm.tags, s:cm.selection)
-		\ )
+	"let lines = s:parse_content(s:cm.content, s:cm.tags, s:cm.selection)
+	"call s:replace_selection(lines)
 endfunction
