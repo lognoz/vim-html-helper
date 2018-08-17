@@ -232,55 +232,6 @@ function! s:select_to_end(selection)
 	return a:selection['end']['col'] < len(getline(a:selection['end']['line'])) + 1
 endfunction
 
-function! s:parse_content(content, tags, selection)
-	let lines = []
-	let position = 0
-	let indent = 0
-
-	if s:select_to_start(a:selection)
-		let begin = a:selection['begin']
-		let string = strpart(getline(begin['line']), 0, begin['col'] - 1)
-		if string != ''
-			call add(lines, string)
-		endif
-	endif
-
-	for tag in a:tags
-		if tag['position'] > position
-			let string = strpart(a:content, position, tag['position'] - position)
-			for line in split(string, '\n')
-				call add(lines, s:fix_indent(line, indent))
-			endfor
-		endif
-
-		if tag['name'][0] == '/'
-			let indent = indent - 1
-		endif
-
-		let position = tag['position'] + tag['length']
-		call add(lines, s:fix_indent(strpart(a:content, tag['position'], tag['length']), indent))
-
-		if tag['name'][0] != '/' && index(s:self_closing_tags, tag['name']) == -1
-			let indent = indent + 1
-		endif
-	endfor
-
-	" If line is not fully selected
-	if a:selection['end']['col'] < len(getline(a:selection['end']['line'])) + 1
-		let string = strpart(getline(a:selection['end']['line']), a:selection['end']['col'])
-		let string = substitute(string, '^\s*\(.\{-}\)\s*$', '\1', '')
-		call add(lines, string)
-	endif
-
-	if (len(a:content) > position)
-		let string = strpart(a:content, position, len(a:content))
-		for line in split(string, '\n')
-			call add(lines, line)
-		endfor
-	endif
-	return lines
-endfunction
-
 function! s:parse_lines(param, tags)
 	let lines = []
 	let position = 0
