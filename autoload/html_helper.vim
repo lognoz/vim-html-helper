@@ -281,6 +281,42 @@ function! s:parse_content(content, tags, selection)
 	return lines
 endfunction
 
+function! s:parse_lines()
+	let lines = []
+
+	for parameters in s:cm.lines
+		let tags = s:extract_tags(parameters['content'])
+		let position = 0
+		let indent = 0
+
+		if len(tags) == 0
+			call add(lines, join([parameters['indent'], parameters['content']], ''))
+		endif
+
+		for tag in tags
+			if tag['position'] > position
+				let string = strpart(parameters['content'], position, tag['position'] - position)
+				for line in split(string, '\n')
+					call add(lines, join([parameters['indent'], s:fix_indent(line, indent)], ''))
+				endfor
+			endif
+
+			if tag['name'][0] == '/'
+				let indent = indent - 1
+			endif
+
+			let position = tag['position'] + tag['length']
+			call add(lines, join([parameters['indent'], s:fix_indent(strpart(parameters['content'], tag['position'], tag['length']), indent)], ''))
+
+			if tag['name'][0] != '/' && index(s:self_closing_tags, tag['name']) == -1
+				let indent = indent + 1
+			endif
+		endfor
+	endfor
+
+	return lines
+endfunction
+
 "===============================================================================
 " Public functions
 "===============================================================================
