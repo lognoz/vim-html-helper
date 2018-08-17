@@ -227,15 +227,22 @@ function! s:extract_tags(content)
 	return tags
 endfunction
 
+function! s:select_to_start(selection)
+	return a:selection['begin']['col'] > 1
+endfunction
+
+function! s:select_to_end(selection)
+	return a:selection['end']['col'] < len(getline(a:selection['end']['line'])) + 1
+endfunction
+
 function! s:parse_content(content, tags, selection)
 	let lines = []
 	let position = 0
 	let indent = 0
 
-	" If line is not fully selected
-	if a:selection['begin']['col'] > 1
-		let string = strpart(getline(a:selection['begin']['line']), 0, a:selection['begin']['col'] - 1)
-		let string = substitute(string, '^\s*\(.\{-}\)\s*$', '\1', '')
+	if s:select_to_start(a:selection)
+		let begin = a:selection['begin']
+		let string = strpart(getline(begin['line']), 0, begin['col'] - 1)
 		if string != ''
 			call add(lines, string)
 		endif
