@@ -161,16 +161,6 @@ function! s:extract_indent(line)
 	return matchstr(getline(a:line), '^\s\+')
 endfunction
 
-function! s:extract_line_break(content)
-	let lines = []
-	let position = -1
-	for line in split(a:content, "\n")
-		let position += len(line)
-		call add(lines, position)
-	endfor
-	return lines
-endfunction
-
 " Extracting tags from string
 " Return an array of tags found
 " If no one was found [] will be return
