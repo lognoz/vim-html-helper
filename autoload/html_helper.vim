@@ -189,9 +189,8 @@ function! s:extract_tags(content)
 		" if this tags has parent in unclose variable. If key exist the close
 		" tag will be added to the parent
 		if name[0] == '/'
-			let key = name[1:]
 			if has_key(unclose, name[1:])
-				let tags[key]['close'] = cpt-1
+				let tags[name[1:]]['close'] = cpt-1
 			endif
 		else
 			let unclose[name] = {
