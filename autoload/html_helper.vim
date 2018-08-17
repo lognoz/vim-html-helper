@@ -308,9 +308,8 @@ function! html_helper#apply()
 	" content: s:content() function return selection content
 	" selection: s:selection() function will return an array of positions
 	call s:cm.define('selection', s:selection())
-	call s:cm.define('indentation', s:extract_indent(s:cm.selection))
 	call s:cm.define('content', s:content())
-	call s:cm.define('line_break', s:extract_line_break(s:cm.content))
+	call s:cm.define('lines', s:lines(s:cm.selection, s:cm.content))
 
 	" Output warning message if selection content is empty after triming
 	" Stop the process of the function by returning 0
