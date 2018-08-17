@@ -354,9 +354,13 @@ function! html_helper#apply()
 	endif
 
 	let lines = []
+	let tags_exist = 0
 	for parameters in s:lines(s:cm.selection, s:cm.content)
 		let tags = s:extract_tags(parameters['content'])
 		let lines += s:parse_lines(parameters, tags)
+		if tags != []
+			let tags_exist = 1
+		endif
 	endfor
 
 	call s:replace_selection(lines)
