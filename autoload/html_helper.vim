@@ -372,14 +372,4 @@ function! html_helper#apply()
 	endif
 
 	call s:replace_selection(lines)
-
-	" Extract tags from selection content
-	" If none have been found [] will be returns
-	" Else a directory will be store for every tag
-	"call s:cm.define('tags', s:extract_tags(s:cm.content))
-
-
-	" Parse content
-	"let lines = s:parse_content(s:cm.content, s:cm.tags, s:cm.selection)
-	"let lines = s:parse_lines()
 endfunction
