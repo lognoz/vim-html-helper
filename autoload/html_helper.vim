@@ -365,6 +365,22 @@ function! html_helper#apply()
 		endif
 	endfor
 
+	if s:select_to_start(s:cm.selection)
+		let position = s:cm.selection.begin
+		let content = strpart(getline(position.line), 0, position.col - 1)
+		if s:trim(content) != ''
+			let lines = [content] + lines
+		endif
+	endif
+
+	if s:select_to_end(s:cm.selection)
+		let position = s:cm.selection.end
+		let content = strpart(getline(position.line), position.col)
+		let content = substitute(content, '^\s*\(.\{-}\)\s*$', '\1', '')
+		let content = s:extract_indent(position.line) . content
+		let lines = lines + [content]
+	endif
+
 	" Output warning message if no tags have been found
 	" Stop the process of the function by returning 0
 	if tags_exist == 0
