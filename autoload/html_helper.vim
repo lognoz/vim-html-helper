@@ -363,6 +363,12 @@ function! html_helper#apply()
 		endif
 	endfor
 
+	" Output warning message if no tags have been found
+	" Stop the process of the function by returning 0
+	if len(s:cm.tags) == 0
+		return s:display_warning("No html tag found")
+	endif
+
 	call s:replace_selection(lines)
 
 	" Extract tags from selection content
@@ -370,11 +376,6 @@ function! html_helper#apply()
 	" Else a directory will be store for every tag
 	"call s:cm.define('tags', s:extract_tags(s:cm.content))
 
-	" Output warning message if no tags have been found
-	" Stop the process of the function by returning 0
-	"if len(s:cm.tags) == 0
-	"	return s:display_warning("No html tag found")
-	"endif
 
 	" Parse content
 	"let lines = s:parse_content(s:cm.content, s:cm.tags, s:cm.selection)
