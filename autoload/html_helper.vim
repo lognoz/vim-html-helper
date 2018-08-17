@@ -287,7 +287,7 @@ function! s:parse_lines(param, tags)
 	let indent = 0
 
 	if len(a:tags) == 0
-		call add(lines, join([a:param.indent, a:param.content], ''))
+		return [join([a:param.indent, a:param.content], '')]
 	endif
 
 	for tag in a:tags
