@@ -281,38 +281,38 @@ function! s:parse_content(content, tags, selection)
 	return lines
 endfunction
 
-function! s:parse_lines()
+function! s:parse_lines(param, tags)
 	let lines = []
+	let position = 0
+	let indent = 0
 
-	for parameters in s:cm.lines
-		let tags = s:extract_tags(parameters['content'])
-		let position = 0
-		let indent = 0
+	if len(a:tags) == 0
+		call add(lines, join([a:param.indent, a:param.content], ''))
+	endif
 
-		if len(tags) == 0
-			call add(lines, join([parameters['indent'], parameters['content']], ''))
+	for tag in a:tags
+		if tag.position > position
+			let part = strpart(a:param.content, position, tag.position - position)
+			call add(lines, join([a:param.indent, s:fix_indent(part, indent)], ''))
 		endif
 
-		for tag in tags
-			if tag['position'] > position
-				let string = strpart(parameters['content'], position, tag['position'] - position)
-				for line in split(string, '\n')
-					call add(lines, join([parameters['indent'], s:fix_indent(line, indent)], ''))
-				endfor
-			endif
+		if tag.name[0] == '/'
+			let indent = indent - 1
+		endif
 
-			if tag['name'][0] == '/'
-				let indent = indent - 1
-			endif
+		let position = tag.position + tag.length
+		let part = strpart(a:param.content, tag.position, tag.length)
+		call add(lines, join([a:param.indent, s:fix_indent(part, indent)], ''))
 
-			let position = tag['position'] + tag['length']
-			call add(lines, join([parameters['indent'], s:fix_indent(strpart(parameters['content'], tag['position'], tag['length']), indent)], ''))
-
-			if tag['name'][0] != '/' && index(s:self_closing_tags, tag['name']) == -1
-				let indent = indent + 1
-			endif
-		endfor
+		if tag.name[0] != '/' && index(s:self_closing_tags, tag.name) == -1
+			let indent = indent + 1
+		endif
 	endfor
+
+	if (len(a:param.content) > position)
+		let part = strpart(a:param.content, position, len(a:param.content))
+		call add(lines, join([a:param.indent, s:fix_indent(part, indent)], ''))
+	endif
 
 	return lines
 endfunction
@@ -353,6 +353,14 @@ function! html_helper#apply()
 		return s:display_warning("No match found")
 	endif
 
+	let lines = []
+	for parameters in s:lines(s:cm.selection, s:cm.content)
+		let tags = s:extract_tags(parameters['content'])
+		let lines += s:parse_lines(parameters, tags)
+	endfor
+
+	call s:replace_selection(lines)
+
 	" Extract tags from selection content
 	" If none have been found [] will be returns
 	" Else a directory will be store for every tag
@@ -366,5 +374,5 @@ function! html_helper#apply()
 
 	" Parse content
 	"let lines = s:parse_content(s:cm.content, s:cm.tags, s:cm.selection)
-	"call s:replace_selection(lines)
+	"let lines = s:parse_lines()
 endfunction
