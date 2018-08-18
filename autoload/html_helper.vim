@@ -55,7 +55,7 @@ let s:cm = s:ContextualManager.new()
 " This is the mode the user is in after s:char
 let s:triggered_mode = ''
 " Identation characters detected by user parameters
-let s:indentation = "\n"
+let s:indentation = "\t"
 " List of self-closing tags
 let s:self_closing_tags = [
 	\ 'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input',
