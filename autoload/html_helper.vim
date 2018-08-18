@@ -85,12 +85,8 @@ function! s:region(start_mark, end_mark)
 endfunction
 
 " Strip whitespace (or other characters) from the beginning and end of a string
-function! s:trim(...)
-	let string = ''
-	for line in split(a:1, '\n')
-		let string .= substitute(line, '^\s*\(.\{-}\)\s*$', '\1', '') . "\n"
-	endfor
-	return string
+function! s:trim(string)
+	return substitute(a:string, '^\s*\(.\{-}\)\s*$', '\1', '')
 endfunction
 
 " Return the content by selection.
