@@ -301,7 +301,6 @@ function! html_helper#apply()
 	" selection: s:selection() function will return an array of positions
 	call s:cm.define('selection', s:selection())
 	call s:cm.define('content', s:content())
-	call s:cm.define('lines', s:lines(s:cm.selection, s:cm.content))
 
 	" Output warning message if selection content is empty after triming
 	" Stop the process of the function by returning 0
