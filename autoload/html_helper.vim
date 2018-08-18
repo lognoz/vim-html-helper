@@ -105,7 +105,7 @@ function! s:content()
 	else
 		let string = @*
 	endif
-	return s:trim(string)
+	return s:clean_lines(string)
 endfunction
 
 " Return the position of the selection by triggered mode. First element is the
