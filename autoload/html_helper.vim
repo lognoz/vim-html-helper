@@ -89,6 +89,14 @@ function! s:trim(string)
 	return substitute(a:string, '^\s*\(.\{-}\)\s*$', '\1', '')
 endfunction
 
+function! s:clean_lines(lines)
+	let string = ''
+	for line in split(a:lines, '\n')
+		let string .= s:trim(line) . "\n"
+	endfor
+	return string
+endfunction
+
 " Return the content by selection.
 " If mode is visual, selection is getting in register * to be return
 function! s:content()
