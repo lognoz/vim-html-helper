@@ -89,6 +89,7 @@ function! s:trim(string)
 	return substitute(a:string, '^\s*\(.\{-}\)\s*$', '\1', '')
 endfunction
 
+" Clean lines content by calling s:trim() function
 function! s:clean_lines(lines)
 	let content = ''
 	for line in split(a:lines, '\n')
