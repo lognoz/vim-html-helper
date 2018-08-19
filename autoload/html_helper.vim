@@ -284,6 +284,8 @@ function! html_helper#multiline(mode)
 	call s:cm.reset()
 endfunction
 
+" Transform line to multiple line based on tags
+" This function is called by feedkeys plugin html-helper-apply-multiline
 function! html_helper#apply()
 	" Disabled visual block mode and output error message in this case
 	" Stop the process of the function by returning 0
