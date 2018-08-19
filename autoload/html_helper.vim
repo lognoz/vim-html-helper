@@ -211,6 +211,7 @@ function! s:extract_tags(content)
 	return tags
 endfunction
 
+" Extracting lines content and indentation
 function! s:lines(selection, content)
 	let parameters = []
 	let line = a:selection['begin']['line']
