@@ -215,10 +215,10 @@ function! s:lines(selection, content)
 	let lines = []
 	let line = a:selection['begin']['line']
 	for content in split(a:content, "\n")
-		let parameter = {}
-		let parameter['content'] = content
-		let parameter['indent'] = s:extract_indent(line)
-		call add(lines, parameter)
+		call add(lines, {
+			\ 'content': content,
+			\ 'indent': s:extract_indent(line)
+			\ })
 		let line += 1
 	endfor
 	return lines
