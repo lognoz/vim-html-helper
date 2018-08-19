@@ -162,6 +162,30 @@ function! s:extract_indent(line)
 	return matchstr(getline(a:line), '^\s\+')
 endfunction
 
+" Extracting lines content and indentation
+function! s:lines(selection, content)
+	let parameters = []
+	let line = a:selection['begin']['line']
+	for content in split(a:content, "\n")
+		call add(parameters, {
+			\ 'content': content,
+			\ 'indent': s:extract_indent(line)
+			\ })
+		let line += 1
+	endfor
+	return parameters
+endfunction
+
+" Verify if select to start
+function! s:select_to_start(selection)
+	return a:selection['begin']['col'] > 1
+endfunction
+
+" Verify if select to end
+function! s:select_to_end(selection)
+	return a:selection['end']['col'] < len(getline(a:selection['end']['line'])) + 1
+endfunction
+
 " Extracting tags from string
 " Return an array of tags found
 " If no one was found [] will be return
@@ -209,30 +233,6 @@ function! s:extract_tags(content)
 			\ })
 	endwhile
 	return tags
-endfunction
-
-" Extracting lines content and indentation
-function! s:lines(selection, content)
-	let parameters = []
-	let line = a:selection['begin']['line']
-	for content in split(a:content, "\n")
-		call add(parameters, {
-			\ 'content': content,
-			\ 'indent': s:extract_indent(line)
-			\ })
-		let line += 1
-	endfor
-	return parameters
-endfunction
-
-" Verify if select to start
-function! s:select_to_start(selection)
-	return a:selection['begin']['col'] > 1
-endfunction
-
-" Verify if select to end
-function! s:select_to_end(selection)
-	return a:selection['end']['col'] < len(getline(a:selection['end']['line'])) + 1
 endfunction
 
 function! s:parse_lines(param, tags)
