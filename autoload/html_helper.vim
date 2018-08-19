@@ -90,11 +90,11 @@ function! s:trim(string)
 endfunction
 
 function! s:clean_lines(lines)
-	let string = ''
+	let content = ''
 	for line in split(a:lines, '\n')
-		let string .= s:trim(line) . "\n"
+		let content .= s:trim(line) . "\n"
 	endfor
-	return string
+	return content
 endfunction
 
 " Return the content by selection.
