@@ -341,7 +341,5 @@ function! html_helper#apply()
 		return s:display_warning("No html tag found")
 	endif
 
-	if len(lines) > 1
-		call s:replace_selection(lines)
-	endif
+	call s:replace_selection(lines)
 endfunction
