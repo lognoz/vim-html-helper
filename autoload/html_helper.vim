@@ -100,23 +100,19 @@ endfunction
 " Return the content by selection.
 " If mode is visual, selection is getting in register * to be return
 function! s:content()
-	if s:triggered_mode ==# 'n'
-		let string = getline('.')
-	else
-		let string = @*
-	endif
-	return s:clean_lines(string)
+	return s:clean_lines(s:triggered_mode ==# 'n' ? getline('.') : @*)
 endfunction
 
 " Return the position of the selection by triggered mode. First element is the
 " line number, second element is the column number
 function! s:selection()
-	if s:triggered_mode ==# 'n'
-		let begin = { 'line': line('.'), 'col': 1 }
-		let end = { 'line': line('.'), 'col': col("$") }
-		return { 'begin': begin, 'end': end }
-	else
+	if s:triggered_mode ==# 'v'
 		return s:region("'<", "'>")
+	else
+		return {
+			\ 'begin': { 'line': line('.'), 'col': 1 },
+			\ 'end': { 'line': line('.'), 'col': col("$") }
+			\ }
 	endif
 endfunction
 
