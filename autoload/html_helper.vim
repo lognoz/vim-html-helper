@@ -212,16 +212,16 @@ function! s:extract_tags(content)
 endfunction
 
 function! s:lines(selection, content)
-	let lines = []
+	let parameters = []
 	let line = a:selection['begin']['line']
 	for content in split(a:content, "\n")
-		call add(lines, {
+		call add(parameters, {
 			\ 'content': content,
 			\ 'indent': s:extract_indent(line)
 			\ })
 		let line += 1
 	endfor
-	return lines
+	return parameters
 endfunction
 
 " Verify if select to start
