@@ -308,6 +308,8 @@ function! html_helper#apply()
 		return s:display_warning("No match found")
 	endif
 
+	" Extracting tags from s:lines() results and parse lines by tags found
+	" Turn variable tags_exist to true if tags was found
 	let lines = []
 	let tags_exist = 0
 	for parameters in s:lines(s:cm.selection, s:cm.content)
