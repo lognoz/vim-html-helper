@@ -10,6 +10,11 @@
 " will the copyright holder be liable for any damamges resulting from the use
 " of this software.
 " ============================================================================
+if exists("g:loaded_html_helper") || &cp
+  finish
+endif
+
+let g:loaded_html_helper = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
