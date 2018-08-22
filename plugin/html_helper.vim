@@ -18,7 +18,7 @@ let g:loaded_html_helper = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! s:init_settings(settings)
+function! s:define_variables(settings)
 	for [key, value] in items(a:settings)
 		let selector = printf('g:html_helper_%s', key)
 		if !exists(selector)
@@ -27,7 +27,7 @@ function! s:init_settings(settings)
 	endfor
 endfunction
 
-call s:init_settings({
+call s:define_variables({
 	\ 'multiple_line': 'g<C-m>'
 	\ })
 
