@@ -1,2 +1,2 @@
-nnoremap <silent> ,e :call html_helper#multiline('n')<CR>
-xnoremap <silent> ,e :<C-u>call html_helper#multiline('v')<CR>
+nnoremap <silent> gm :call html_helper#multiline('n')<CR>
+xnoremap <silent> gm :<C-u>call html_helper#multiline('v')<CR>
