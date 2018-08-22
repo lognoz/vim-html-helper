@@ -18,10 +18,6 @@ let g:loaded_html_helper = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:default_settings = {
-	\ 'multiple_line': 'g<C-m>'
-	\ }
-
 function! s:init_settings(settings)
 	for [key, value] in items(a:settings)
 		let selector = printf('g:html_helper_%s', key)
@@ -31,7 +27,9 @@ function! s:init_settings(settings)
 	endfor
 endfunction
 
-call s:init_settings(s:default_settings)
+call s:init_settings({
+	\ 'multiple_line': 'g<C-m>'
+	\ })
 
 if exists('g:html_helper_multiple_line')
 	exec 'nnoremap <silent> '.g:html_helper_multiple_line.
