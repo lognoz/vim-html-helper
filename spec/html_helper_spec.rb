@@ -29,6 +29,10 @@ def type(string)
 	end
 end
 
+def execute(string)
+	vim.command(string)
+end
+
 describe "testing expand tags on multiple line" do
 	let(:filename) { 'test.txt' }
 
@@ -37,7 +41,7 @@ describe "testing expand tags on multiple line" do
 			<a href="#">bla bla bla</a>
 		EOF
 
-		vim.command(':call html_helper#multiline("n")')
+		execute ':call html_helper#multiline("n")'
 
 		after <<-EOF
 			<a href="#">
