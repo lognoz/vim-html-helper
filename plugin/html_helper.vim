@@ -28,7 +28,7 @@ function! s:define_variables(settings)
 endfunction
 
 call s:define_variables({
-	\ 'multiple_line': 'g<C-m>'
+	\ 'multiple_line': '<C-m>'
 	\ })
 
 if exists('g:html_helper_multiple_line')
