@@ -41,7 +41,7 @@ describe "Testing expand tags on multiple line" do
 			<a href="#">bla bla bla</a>
 		EOF
 
-		execute ':call html_helper#multiline("n")'
+		type '<C-m>'
 
 		after <<-EOF
 			<a href="#">
