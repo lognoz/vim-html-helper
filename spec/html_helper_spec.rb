@@ -79,4 +79,55 @@ describe "Testing expand tags on multiple line" do
 				</a>
 		EOF
 	end
+
+
+	specify "- Indent keeping in visual mode" do
+		before <<-EOF
+			bla bla bla
+				<a href="#">bla bla bla</a>
+		EOF
+
+		type 'jV<C-m>'
+
+		after <<-EOF
+			bla bla bla
+				<a href="#">
+					bla bla bla
+				</a>
+		EOF
+	end
+
+	specify "- Indent keeping when indentation is not selected" do
+		before <<-EOF
+			bla bla bla
+				<a href="#">bla bla bla</a>
+		EOF
+
+		type 'jvat<C-m>'
+
+		after <<-EOF
+			bla bla bla
+				<a href="#">
+					bla bla bla
+				</a>
+		EOF
+	end
+
+	specify "- Tag with content before and after" do
+		before <<-EOF
+			bla bla bla
+				bla<a href="#">bla bla bla</a>bla
+		EOF
+
+		type 'jf<vat\<C-m>'
+
+		after <<-EOF
+			bla bla bla
+				bla
+				<a href="#">
+					bla bla bla
+				</a>
+				bla
+		EOF
+	end
 end
