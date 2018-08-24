@@ -63,4 +63,20 @@ describe "Testing expand tags on multiple line" do
 			</a>
 		EOF
 	end
+
+	specify "- Indent keeping in normal mode" do
+		before <<-EOF
+			bla bla bla
+				<a href="#">bla bla bla</a>
+		EOF
+
+		type 'j<C-m>'
+
+		after <<-EOF
+			bla bla bla
+				<a href="#">
+					bla bla bla
+				</a>
+		EOF
+	end
 end
