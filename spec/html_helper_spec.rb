@@ -29,9 +29,10 @@ def type(string)
 	end
 end
 
-describe "HTML helper multiple line" do
+describe "testing expand tags on multiple line" do
 	let(:filename) { 'test.txt' }
-	specify "Normal mode" do
+
+	specify "single line on normal mode" do
 		before <<-EOF
 			<a href="#">bla bla bla</a>
 		EOF
