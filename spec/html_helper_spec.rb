@@ -33,10 +33,10 @@ def execute(string)
 	vim.command(string)
 end
 
-describe "testing expand tags on multiple line" do
+describe "Testing expand tags on multiple line" do
 	let(:filename) { 'test.txt' }
 
-	specify "single line on normal mode" do
+	specify "Single line on normal mode" do
 		before <<-EOF
 			<a href="#">bla bla bla</a>
 		EOF
