@@ -36,7 +36,7 @@ end
 describe "Testing expand tags on multiple line" do
 	let(:filename) { 'test.txt' }
 
-	specify "- Single line on normal mode" do
+	specify "- Single line in normal mode" do
 		before <<-EOF
 			<a href="#">bla bla bla</a>
 		EOF
@@ -50,7 +50,7 @@ describe "Testing expand tags on multiple line" do
 		EOF
 	end
 
-	specify "- Single line on visual mode" do
+	specify "- Single line in visual mode" do
 		before <<-EOF
 			<a href="#">bla bla bla</a>
 		EOF
