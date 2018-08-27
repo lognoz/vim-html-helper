@@ -130,4 +130,26 @@ describe "Testing expand tags on multiple line" do
 				bla
 		EOF
 	end
+
+	specify "- Tag surrounds with empty lines" do
+		before <<-EOF
+			bla bla bla
+
+			<a href="#">bla bla bla</a>
+
+			bla bla bla
+		EOF
+
+		type 'jV3j<C-m>'
+
+		after <<-EOF
+			bla bla bla
+
+			<a href="#">
+				bla bla bla
+			</a>
+
+			bla bla bla
+		EOF
+	end
 end
