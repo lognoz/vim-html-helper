@@ -119,7 +119,7 @@ describe "Testing expand tags on multiple line" do
 				bla<a href="#">bla bla bla</a>bla
 		EOF
 
-		type 'jf<vat\<C-m>'
+		type 'j^3lvat<C-m>'
 
 		after <<-EOF
 			bla bla bla
