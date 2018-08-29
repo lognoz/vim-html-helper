@@ -249,25 +249,34 @@ function! s:extract_tags(content)
 	return tags
 endfunction
 
+" Parse lines with its tags find in it. Each tags will be added
+" on lines array and will be formated with its lines indentation.
 function! s:parse_lines(param, tags)
+	" Lines formated
 	let lines = []
+	" Position of lines analysed
 	let position = 0
+	" Current indentation
 	let indent = 0
 
+	" If no tag was found the line will stay the same
 	if len(a:tags) == 0
 		return [join([a:param.indent, a:param.content], '')]
 	endif
 
+	" Parse tags stored in argument variable a:tags
 	for tag in a:tags
 		if tag.position > position
 			let part = strpart(a:param.content, position, tag.position - position)
 			call add(lines, join([a:param.indent, s:fix_indent(part, indent)], ''))
 		endif
 
+		" If it's an close tags decreases the indentation
 		if tag.name[0] == '/'
 			let indent = indent - 1
 		endif
 
+		" Update the current position analysis
 		let position = tag.position + tag.length
 		let part = strpart(a:param.content, tag.position, tag.length)
 		call add(lines, join([a:param.indent, s:fix_indent(part, indent)], ''))
@@ -327,7 +336,7 @@ function! html_helper#apply()
 	let lines = []
 	let tags_exist = 0
 	for parameters in s:lines(s:cm.selection, s:cm.content)
-		" Extract tags from selection content
+		" Extract tags from selection content and
 		" If none have been found [] will be returns
 		let tags = s:extract_tags(parameters['content'])
 		let lines += s:parse_lines(parameters, tags)
