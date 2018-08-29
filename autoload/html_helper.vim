@@ -91,6 +91,20 @@ endfunction
 
 " Clean lines content by calling s:trim() function
 function! s:clean_lines(lines)
+"	let content = ''
+"	let explode = split(a:lines, "\n")
+"	let selection = s:cm.selection
+"	let length = (selection.end.line - selection.begin.line) + 1
+"	if length != len(explode)
+"		for i in range(len(explode), length)
+"			let content .= "\n"
+"		endfor
+"	endif
+"	for line in explode
+"		let content .= s:trim(line) . "\n"
+"	endfor
+"	echo content
+"	return content
 	let content = ''
 	for line in split(a:lines, '\n')
 		let content .= s:trim(line) . "\n"
@@ -166,8 +180,21 @@ endfunction
 " Extracting lines content and indentation
 function! s:lines(selection, content)
 	let parameters = []
+	let explode = split(a:content, "\n")
 	let line = a:selection['begin']['line']
-	for content in split(a:content, "\n")
+	let end = a:selection['end']
+	let begin = a:selection['begin']
+	let length = (end.line - begin.line) + 1
+	if length > len(explode)
+		for i in range(len(explode), length - 1)
+			call add(parameters, {
+				\ 'content': "",
+				\ 'indent': ""
+				\ })
+			let line += 1
+		endfor
+	endif
+	for content in explode
 		call add(parameters, {
 			\ 'content': content,
 			\ 'indent': s:extract_indent(line)
