@@ -236,6 +236,11 @@ function! s:extract_tags(content)
 	return tags
 endfunction
 
+function! s:parse_line(param, indent, position)
+	let part = strpart(a:param.content, a:position[0], a:position[1])
+	return join([a:param.indent, s:fix_indent(part, a:indent)], '')
+endfunction
+
 " Parse lines with its tags find in it. Each tags will be added
 " on lines array and will be formated with its lines indentation.
 function! s:parse_content(param, tags)
@@ -254,8 +259,7 @@ function! s:parse_content(param, tags)
 	" Parse tags stored in argument variable a:tags
 	for tag in a:tags
 		if tag.position > position
-			let part = strpart(a:param.content, position, tag.position - position)
-			call add(lines, join([a:param.indent, s:fix_indent(part, indent)], ''))
+			call add(lines, s:parse_line(a:param, indent, [position, tag.position - position]))
 		endif
 
 		" If it's an close tags decreases the indentation
@@ -265,8 +269,7 @@ function! s:parse_content(param, tags)
 
 		" Update the current position analysis
 		let position = tag.position + tag.length
-		let part = strpart(a:param.content, tag.position, tag.length)
-		call add(lines, join([a:param.indent, s:fix_indent(part, indent)], ''))
+		call add(lines, s:parse_line(a:param, indent, [tag.position, tag.length]))
 
 		if tag.name[0] != '/' && index(s:self_closing_tags, tag.name) == -1
 			let indent = indent + 1
@@ -274,8 +277,7 @@ function! s:parse_content(param, tags)
 	endfor
 
 	if (len(a:param.content) > position)
-		let part = strpart(a:param.content, position, len(a:param.content))
-		call add(lines, join([a:param.indent, s:fix_indent(part, indent)], ''))
+		call add(lines, s:parse_line(a:param, indent, [position, len(a:param.content)]))
 	endif
 
 	return lines
