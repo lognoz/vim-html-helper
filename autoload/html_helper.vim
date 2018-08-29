@@ -238,7 +238,7 @@ endfunction
 
 " Parse lines with its tags find in it. Each tags will be added
 " on lines array and will be formated with its lines indentation.
-function! s:parse_lines(param, tags)
+function! s:parse_content(param, tags)
 	" Lines formated
 	let lines = []
 	" Position of lines analysed
@@ -326,7 +326,7 @@ function! html_helper#apply()
 		" Extract tags from selection content and
 		" If none have been found [] will be returns
 		let tags = s:extract_tags(parameters['content'])
-		let lines += s:parse_lines(parameters, tags)
+		let lines += s:parse_content(parameters, tags)
 		if tags != []
 			let tags_exist = 1
 		endif
