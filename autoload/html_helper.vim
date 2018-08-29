@@ -236,6 +236,7 @@ function! s:extract_tags(content)
 	return tags
 endfunction
 
+" Get content with two positions and fix the indentation
 function! s:parse_line(param, indent, position)
 	let part = strpart(a:param.content, a:position[0], a:position[1])
 	return join([a:param.indent, s:fix_indent(part, a:indent)], '')
