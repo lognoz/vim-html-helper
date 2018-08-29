@@ -177,24 +177,22 @@ function! s:extract_indent(line)
 	return matchstr(getline(a:line), '^\s\+')
 endfunction
 
+function! s:extract_line(selection, content)
+	let lines = split(a:content, "\n")
+	let length = [len(lines), a:selection.end.line - a:selection.begin.line + 1]
+	if length[0] < length[1]
+		for i in range(length[0], length[1] - 1)
+			let lines = [''] + lines
+		endfor
+	endif
+	return lines
+endfunction
+
 " Extracting lines content and indentation
 function! s:lines(selection, content)
 	let parameters = []
-	let explode = split(a:content, "\n")
 	let line = a:selection['begin']['line']
-	let end = a:selection['end']
-	let begin = a:selection['begin']
-	let length = (end.line - begin.line) + 1
-	if length > len(explode)
-		for i in range(len(explode), length - 1)
-			call add(parameters, {
-				\ 'content': "",
-				\ 'indent': ""
-				\ })
-			let line += 1
-		endfor
-	endif
-	for content in explode
+	for content in s:extract_line(a:selection, a:content)
 		call add(parameters, {
 			\ 'content': content,
 			\ 'indent': s:extract_indent(line)
