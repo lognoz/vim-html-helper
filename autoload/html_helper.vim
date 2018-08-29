@@ -250,36 +250,29 @@ function! s:parse_content(param, tags)
 	let position = 0
 	" Current indentation
 	let indent = 0
-
 	" If no tag was found the line will stay the same
 	if len(a:tags) == 0
 		return [join([a:param.indent, a:param.content], '')]
 	endif
-
 	" Parse tags stored in argument variable a:tags
 	for tag in a:tags
 		if tag.position > position
 			call add(lines, s:parse_line(a:param, indent, [position, tag.position - position]))
 		endif
-
 		" If it's an close tags decreases the indentation
 		if tag.name[0] == '/'
 			let indent = indent - 1
 		endif
-
 		" Update the current position analysis
 		let position = tag.position + tag.length
 		call add(lines, s:parse_line(a:param, indent, [tag.position, tag.length]))
-
 		if tag.name[0] != '/' && index(s:self_closing_tags, tag.name) == -1
 			let indent = indent + 1
 		endif
 	endfor
-
 	if (len(a:param.content) > position)
 		call add(lines, s:parse_line(a:param, indent, [position, len(a:param.content)]))
 	endif
-
 	return lines
 endfunction
 
