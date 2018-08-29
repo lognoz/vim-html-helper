@@ -177,6 +177,9 @@ function! s:extract_indent(line)
 	return matchstr(getline(a:line), '^\s\+')
 endfunction
 
+" Extracting lines from content. A bug appends with empty lines in first selection
+" position if split is use directly. This function calculate the difference
+" between split length and selection length to fix this problem.
 function! s:extract_line(selection, content)
 	let lines = split(a:content, "\n")
 	let length = a:selection.end.line - a:selection.begin.line + 1
