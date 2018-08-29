@@ -332,6 +332,7 @@ function! html_helper#apply()
 		endif
 	endfor
 
+	" Detect if the selection is from the start
 	if s:select_to_start(s:cm.selection)
 		let position = s:cm.selection.begin
 		let content = strpart(getline(position.line), 0, position.col - 1)
@@ -340,6 +341,7 @@ function! html_helper#apply()
 		endif
 	endif
 
+	" Detect if the selection is from the end
 	if s:select_to_end(s:cm.selection)
 		let position = s:cm.selection.end
 		let content = strpart(getline(position.line), position.col)
@@ -355,5 +357,6 @@ function! html_helper#apply()
 		return s:display_warning("No html tag found")
 	endif
 
+	" Replace the selection by the parsed content
 	call s:replace_selection(lines)
 endfunction
