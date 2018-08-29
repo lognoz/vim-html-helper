@@ -256,20 +256,24 @@ function! s:parse_content(param, tags)
 	endif
 	" Parse tags stored in argument variable a:tags
 	for tag in a:tags
+		" Append content before current tags
 		if tag.position > position
 			call add(lines, s:parse_line(a:param, indent, [position, tag.position - position]))
 		endif
-		" If it's an close tags decreases the indentation
+		" Decreases the indentation if it's an close tags
 		if tag.name[0] == '/'
 			let indent = indent - 1
 		endif
 		" Update the current position analysis
 		let position = tag.position + tag.length
+		" Append tag content
 		call add(lines, s:parse_line(a:param, indent, [tag.position, tag.length]))
+		" Increase the indentation if it's not a self closing tag
 		if tag.name[0] != '/' && index(s:self_closing_tags, tag.name) == -1
 			let indent = indent + 1
 		endif
 	endfor
+	" Append content after last tag
 	if (len(a:param.content) > position)
 		call add(lines, s:parse_line(a:param, indent, [position, len(a:param.content)]))
 	endif
