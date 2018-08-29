@@ -91,20 +91,6 @@ endfunction
 
 " Clean lines content by calling s:trim() function
 function! s:clean_lines(lines)
-"	let content = ''
-"	let explode = split(a:lines, "\n")
-"	let selection = s:cm.selection
-"	let length = (selection.end.line - selection.begin.line) + 1
-"	if length != len(explode)
-"		for i in range(len(explode), length)
-"			let content .= "\n"
-"		endfor
-"	endif
-"	for line in explode
-"		let content .= s:trim(line) . "\n"
-"	endfor
-"	echo content
-"	return content
 	let content = ''
 	for line in split(a:lines, '\n')
 		let content .= s:trim(line) . "\n"
