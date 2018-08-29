@@ -179,12 +179,11 @@ endfunction
 
 function! s:extract_line(selection, content)
 	let lines = split(a:content, "\n")
-	let length = [len(lines), a:selection.end.line - a:selection.begin.line + 1]
-	if length[0] < length[1]
-		for i in range(length[0], length[1] - 1)
-			let lines = [''] + lines
-		endfor
-	endif
+	let length = a:selection.end.line - a:selection.begin.line + 1
+	while length >= len(lines)
+		let lines = [''] + lines
+		let length -= 1
+	endwhile
 	return lines
 endfunction
 
