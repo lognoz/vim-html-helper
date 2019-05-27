@@ -11,7 +11,7 @@
 " of this software.
 " ============================================================================
 if exists("g:loaded_html_helper") || &cp
-  finish
+	finish
 endif
 
 let g:loaded_html_helper = 1
