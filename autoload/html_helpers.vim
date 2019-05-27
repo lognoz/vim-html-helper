@@ -251,6 +251,7 @@ function! s:parse_content(param, tags)
 	let position = 0
 	" Current indentation
 	let indent = 0
+
 	" If no tag was found the line will stay the same
 	if len(a:tags) == 0
 		return [join([a:param.indent, a:param.content], '')]
@@ -259,7 +260,10 @@ function! s:parse_content(param, tags)
 	for tag in a:tags
 		" Append content before current tags
 		if tag.position > position
-			call add(lines, s:parse_line(a:param, indent, [position, tag.position - position]))
+			let content = s:parse_line(a:param, indent, [position, tag.position - position])
+			if s:trim(content) != ''
+				call add(lines, content)
+			endif
 		endif
 		" Decreases the indentation if it's an close tags
 		if tag.name[0] == '/'
@@ -278,6 +282,7 @@ function! s:parse_content(param, tags)
 	if (len(a:param.content) > position)
 		call add(lines, s:parse_line(a:param, indent, [position, len(a:param.content)]))
 	endif
+
 	return lines
 endfunction
 
