@@ -184,4 +184,16 @@ describe "Testing expand tags on multiple line" do
 			</ul>
 		EOF
 	end
+
+	specify "- With php tag" do
+		before <<-EOF
+			<a href="<?= $href ?>"></a>
+		EOF
+
+		type '<C-m>'
+
+		after <<-EOF
+			<a href="<?= $href ?>"></a>
+		EOF
+	end
 end
