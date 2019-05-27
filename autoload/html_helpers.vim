@@ -202,10 +202,26 @@ function! s:select_to_end(selection)
 	return a:selection['end']['col'] < len(getline(a:selection['end']['line'])) + 1
 endfunction
 
+" Return content without server tags like <?= ?>, <?php ?>, <% %>
+function! s:strip_server_tags(content)
+	let regex = '<?=\=\%(php\)\=.\{-}?>\|<%=\=.\+%>'
+	let content = a:content
+	while 1
+		let match = matchstr(content, regex)
+		if match == ''
+			break
+		endif
+		let content = substitute(content, regex, repeat('#', len(match)), '')
+	endwhile
+	return content
+endfunction
+
 " Extracting tags from string
 " Return an array of tags found
 " If no one was found [] will be return
 function! s:extract_tags(content)
+	" Content without server tags
+	let content = s:strip_server_tags(a:content)
 	" Counter that will be use to matchstr tags
 	let cpt = 0
 	" List of tags found
@@ -215,14 +231,14 @@ function! s:extract_tags(content)
 	while 1
 		let cpt += 1
 		" Match tags in the content
-		let match = matchstr(a:content, '<[^<>]*>', 0, cpt)
+		let match = matchstr(content, '<[^<>]*>', 0, cpt)
 		if match == ''
 			break
 		endif
 		" Remove all attributes in match found
 		" <p class="a"> will be p and </p> will be /p
 		let name = matchstr(match, '<\zs/\?\%([[:alpha:]_:]\|[^\x00-\x7F]\)\%([-._:[:alnum:]]\|[^\x00-\x7F]\)*')
-		let position = match(a:content, '<[^<>]*>', 0, cpt)
+		let position = match(content, '<[^<>]*>', 0, cpt)
 		" Add information about tag found
 		" name: name of the tag that have been found (p or /p)
 		" position: position start of the match
