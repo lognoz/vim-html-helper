@@ -7,7 +7,7 @@ Vimrunner::RSpec.configure do |config|
 	config.reuse_server = false
 	config.start_vim do
 		vim = Vimrunner.start_gvim
-		vim.add_plugin(plugin_path, 'plugin/html_helper.vim')
+		vim.add_plugin(plugin_path, 'plugin/html_helpers.vim')
 		vim
 	end
 end
