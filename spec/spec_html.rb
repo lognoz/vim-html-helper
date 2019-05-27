@@ -152,4 +152,20 @@ describe "Testing expand tags on multiple line" do
 			bla bla bla
 		EOF
 	end
+
+	specify "- Spaces after tags" do
+		before <<-EOF
+			<ul> <a href="#">bla bla bla</a> </ul>
+		EOF
+
+		type 'j^3lvat<C-m>'
+
+		after <<-EOF
+			<ul>
+				<a href="#">
+					bla bla bla
+				</a>
+			</ul>
+		EOF
+	end
 end
