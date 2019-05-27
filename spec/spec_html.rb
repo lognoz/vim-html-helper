@@ -187,13 +187,15 @@ describe "Testing expand tags on multiple line" do
 
 	specify "- With php tag" do
 		before <<-EOF
-			<a href="<?= $href ?>"></a>
+			<a href="<?= $href ?>">bla bla bla</a>
 		EOF
 
 		type '<C-m>'
 
 		after <<-EOF
-			<a href="<?= $href ?>"></a>
+			<a href="<?= $href ?>">
+				bla bla bla
+			</a>
 		EOF
 	end
 end
