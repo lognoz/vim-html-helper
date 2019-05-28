@@ -1,17 +1,13 @@
-"===============================================================================
-" Internal Mappings
-"===============================================================================
+" vim: foldmethod=marker
 
+" Internal Mappings {{{1
 nnoremap <silent> <Plug>(html-helpers-apply-multiline) :call html_helpers#apply()<CR>
 xnoremap <silent> <Plug>(html-helpers-apply-multiline) :<C-u>call html_helpers#apply()<CR>
 
-"===============================================================================
-" Contextual class
-"===============================================================================
-
+" Contextual class {{{1
 let s:ContextualManager = {}
 
-" Constructor
+" Contextual Manager Constructor
 function! s:ContextualManager.new()
 	let obj = copy(self)
 	" List of tags we're managing
@@ -46,9 +42,7 @@ function! s:ContextualManager.debug() dict
 	endfor
 endfunction
 
-"===============================================================================
-" Variables
-"===============================================================================
+" Variables {{{1
 
 " Singleton of contextual manager instance
 let s:cm = s:ContextualManager.new()
@@ -62,9 +56,7 @@ let s:self_closing_tags = [
 	\ 'keygen', 'link', 'menuitem', 'meta', 'param', 'source', 'track', 'wbr'
 	\ ]
 
-"===============================================================================
-" Utility functions
-"===============================================================================
+" Utility functions {{{1
 
 " Return the position of the input marker as array. First element is the line
 " number, second element is the column number
@@ -302,9 +294,7 @@ function! s:parse_content(param, tags)
 	return lines
 endfunction
 
-"===============================================================================
-" Public functions
-"===============================================================================
+" Public functions {{{1
 
 " Set triggered mode and call function html_helpers#apply with feedkeys
 " At the end contextual manager is reseted
