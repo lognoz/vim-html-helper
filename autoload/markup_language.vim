@@ -1,8 +1,8 @@
 " vim: foldmethod=marker
 
 " Internal Mappings {{{1
-nnoremap <silent> <Plug>(html-helpers-apply-multiline) :call html_helpers#apply()<CR>
-xnoremap <silent> <Plug>(html-helpers-apply-multiline) :<C-u>call html_helpers#apply()<CR>
+nnoremap <silent> <Plug>(markup-language-apply-expand) :call markup_language#apply()<CR>
+xnoremap <silent> <Plug>(markup-language-apply-expand) :<C-u>call markup_language#apply()<CR>
 
 " Contextual class {{{1
 let s:ContextualManager = {}
@@ -298,16 +298,16 @@ endfunction
 
 " Set triggered mode and call function html_helpers#apply with feedkeys
 " At the end contextual manager is reseted
-function! html_helpers#multiline(mode)
+function! markup_language#expand(mode)
 	let s:triggered_mode = a:mode
 	let s:indentation = s:get_document_indentation()
-	call feedkeys("\<Plug>(html-helpers-apply-multiline)")
+	call feedkeys("\<Plug>(markup-language-apply-expand)")
 	call s:cm.reset()
 endfunction
 
 " Transform line to multiple line based on tags
 " This function is called by feedkeys plugin html-helpers-apply-multiline
-function! html_helpers#apply()
+function! markup_language#apply()
 	" Disabled visual block mode and output error message in this case
 	" Stop the process of the function by returning 0
 	if s:triggered_mode ==# 'v'

@@ -1,14 +1,14 @@
-if exists("g:loaded_html_helpers") || &cp
-	finish
-endif
+"if exists("g:loaded_markup_language") || &cp
+"	finish
+"endif
 
-let g:loaded_html_helpers = 1
+let g:loaded_markup_language = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
 function! s:define_variables(settings)
 	for [key, value] in items(a:settings)
-		let selector = printf('g:html_helpers_%s', key)
+		let selector = printf('g:markup_language_%s', key)
 		if !exists(selector)
 			execute printf("let %s='%s'", selector, value)
 		endif
@@ -16,14 +16,14 @@ function! s:define_variables(settings)
 endfunction
 
 call s:define_variables({
-	\ 'multiple_line': '<C-m>'
+	\ 'expand': 'gS'
 	\ })
 
-if exists('g:html_helpers_multiple_line')
-	exec 'nnoremap <silent> '.g:html_helpers_multiple_line.
-	     \' :call html_helpers#multiline("n")<CR>'
-	exec 'xnoremap <silent> '.g:html_helpers_multiple_line.
-	     \' :<C-u>call html_helpers#multiline("v")<CR>'
+if exists('g:markup_language_expand')
+	exec 'nnoremap <silent> '.g:markup_language_expand.
+	     \' :call markup_language#expand("n")<CR>'
+	exec 'xnoremap <silent> '.g:markup_language_expand.
+	     \' :<C-u>call markup_language#expand("v")<CR>'
 endif
 
 let &cpo = s:save_cpo
