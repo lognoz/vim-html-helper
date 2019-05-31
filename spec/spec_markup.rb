@@ -41,7 +41,7 @@ describe "Testing expand tags on multiple line" do
 			<a href="#">bla bla bla</a>
 		EOF
 
-		type 'gS'
+		type '<C-m>'
 
 		after <<-EOF
 			<a href="#">
@@ -55,7 +55,7 @@ describe "Testing expand tags on multiple line" do
 			<a href="#">bla bla bla</a>
 		EOF
 
-		type 'VgS'
+		type 'V<C-m>'
 
 		after <<-EOF
 			<a href="#">
@@ -70,7 +70,7 @@ describe "Testing expand tags on multiple line" do
 				<a href="#">bla bla bla</a>
 		EOF
 
-		type 'jgS'
+		type 'j<C-m>'
 
 		after <<-EOF
 			bla bla bla
@@ -87,7 +87,7 @@ describe "Testing expand tags on multiple line" do
 				<a href="#">bla bla bla</a>
 		EOF
 
-		type 'jVgS'
+		type 'jV<C-m>'
 
 		after <<-EOF
 			bla bla bla
@@ -103,7 +103,7 @@ describe "Testing expand tags on multiple line" do
 				<a href="#">bla bla bla</a>
 		EOF
 
-		type 'jvatgS'
+		type 'jvat<C-m>'
 
 		after <<-EOF
 			bla bla bla
@@ -119,7 +119,7 @@ describe "Testing expand tags on multiple line" do
 				bla<a href="#">bla bla bla</a>bla
 		EOF
 
-		type 'j^3lvatgS'
+		type 'j^3lvat<C-m>'
 
 		after <<-EOF
 			bla bla bla
@@ -140,7 +140,7 @@ describe "Testing expand tags on multiple line" do
 			bla bla bla
 		EOF
 
-		type 'jV3jgS'
+		type 'jV3j<C-m>'
 
 		after <<-EOF
 			bla bla bla
@@ -158,7 +158,7 @@ describe "Testing expand tags on multiple line" do
 			<ul> <a href="#">bla bla bla</a> </ul>
 		EOF
 
-		type 'gS'
+		type '<C-m>'
 
 		after <<-EOF
 			<ul>
@@ -174,7 +174,7 @@ describe "Testing expand tags on multiple line" do
 			<ul> <a href="#">  bla bla bla  </a> </ul>
 		EOF
 
-		type 'gS'
+		type '<C-m>'
 
 		after <<-EOF
 			<ul>
@@ -190,7 +190,7 @@ describe "Testing expand tags on multiple line" do
 			<a href="<?= $href ?>">bla bla bla</a>
 		EOF
 
-		type 'gS'
+		type '<C-m>'
 
 		after <<-EOF
 			<a href="<?= $href ?>">
