@@ -1,6 +1,6 @@
-if exists("g:loaded_markup_language") || &cp
-	finish
-endif
+"if exists("g:loaded_markup_language") || &cp
+"	finish
+"endif
 
 let g:loaded_markup_language = 1
 let s:save_cpo = &cpo
@@ -16,12 +16,15 @@ function! s:define_variables(settings)
 endfunction
 
 call s:define_variables({
-	\ 'expand': 'gS'
+	\ 'expand': 'gS',
+	\ 'attribute': 'gA'
 	\ })
 
 if exists('g:markup_language_expand')
 	exec 'nnoremap <silent> '.g:markup_language_expand.
 	     \' :call markup_language#expand("n")<CR>'
+	exec 'nnoremap <silent> '.g:markup_language_attribute.
+	     \' :call markup_language#attribute()<CR>'
 	exec 'xnoremap <silent> '.g:markup_language_expand.
 	     \' :<C-u>call markup_language#expand("v")<CR>'
 endif

@@ -142,6 +142,112 @@ function! s:fix_indent(string, indent)
 	return repeat(s:indentation, a:indent).a:string
 endfunction
 
+function! s:get_tag_under_cursor()
+	let cursor = col('.') - 1
+	let content = getline('.')
+
+	for tag in s:extract_tags(content)
+		let ending = tag.position + tag.length - 1
+
+		if tag.position <= cursor && ending >= cursor && tag.name[0] != '/'
+			let tag.content = content[tag.position:ending]
+			return tag
+		endif
+	endfor
+endfunction
+
+function! s:get_tag_attributes(content)
+	let content = s:strip_server_tags(a:content)
+	let regex = ' .\{-}=".\{-}"\| .\{-}=''.\{-}'''
+	let cpt = 0
+	let attributes = []
+
+	while 1
+		let match = matchstr(content, regex)
+		let cpt += 1
+
+		if match == ''
+			break
+		endif
+
+		let start_position = match(content, regex, 0) + 1
+		let end_position = len(match) + start_position - 2
+		let content = substitute(content, regex, repeat('#', len(match)), '')
+		let match = a:content[start_position:end_position]
+
+		call add(attributes, {
+			\ 'content': match,
+			\ 'start_position': start_position,
+			\ 'end_position': end_position,
+			\ })
+	endwhile
+
+	return attributes
+endfunction
+
+"function! s:get_tag_attributes(content)
+"	let content = s:strip_server_tags(a:content)
+"	let regex = ' .\{-}=".\{-}"\| .\{-}=''.\{-}'''
+"	let cpt = 0
+"	let attributes = []
+"
+"	while 1
+"		let match = matchstr(content, regex)
+"		let cpt += 1
+"
+"		if match == ''
+"			break
+"		endif
+"
+"		let start_position = match(content, regex, 0) + 1
+"		let end_position = len(match) + start_position - 2
+"		let content = substitute(content, regex, repeat('#', len(match)), '')
+"		let match = a:content[start_position:end_position]
+"
+"		call add(attributes, {
+"			\ 'content': match,
+"			\ 'start_position': start_position,
+"			\ 'end_position': end_position,
+"			\ })
+"	endwhile
+"
+"	echom attributes
+"
+"	"echom match
+"endfunction
+
+"	let content = s:strip_server_tags(a:content)
+"	" Counter that will be use to matchstr tags
+"	let cpt = 0
+"	" List of tags found
+"	let tags = []
+"	" Loop until we can't found new match tag
+"	" If match is empty the loop will be breaks
+"	while 1
+"		let cpt += 1
+"		" Match tags in the content
+"		let match = matchstr(content, '<[^<>]*>', 0, cpt)
+"		if match == ''
+"			break
+"		endif
+"		" Remove all attributes in match found
+"		" <p class="a"> will be p and </p> will be /p
+"		let name = matchstr(match, '<\zs/\?\%([[:alpha:]_:]\|[^\x00-\x7F]\)\%([-._:[:alnum:]]\|[^\x00-\x7F]\)*')
+"		let position = match(content, '<[^<>]*>', 0, cpt)
+"		" Add information about tag found
+"		" name: name of the tag that have been found (p or /p)
+"		" position: position start of the match
+"		" length: length of the match
+"		call add(tags, {
+"			\ 'name': name,
+"			\ 'position': position,
+"			\ 'length': len(match)
+"			\ })
+"	endwhile
+"	return tags
+
+
+
 " Replace the selection by the parsed content
 function! s:replace_selection(content)
 	call s:select_in_visual_mode()
@@ -370,4 +476,43 @@ function! markup_language#apply()
 
 	" Replace the selection by the parsed content
 	call s:replace_selection(lines)
+endfunction
+
+function! markup_language#attribute()
+	let line = line('.')
+	let tag = s:get_tag_under_cursor()
+	let content = tag.content
+
+	let line_indent = s:extract_indent(line)
+	let attr_indent = repeat(' ', len(tag.name) + tag.position + 1)
+
+	let attributes = s:get_tag_attributes(content)
+	let lines = []
+	let cpt = 0
+
+	"echom tag.position
+	let start_content = strcharpart(getline('.'), 0, tag.position)
+	let end_content = strcharpart(getline('.'), tag.position + tag.length, len(getline('.')))
+
+	for attribute in attributes
+		let start = ""
+		let end = ""
+		let indent = ""
+
+		if cpt == 0
+			let start = start_content . "<" . tag.name . " "
+		elseif cpt == len(attributes) - 1
+			let indent = line_indent . attr_indent
+			let end = ">" . end_content
+		else
+			let indent = line_indent . attr_indent
+		endif
+
+		call add(lines, start . indent . attribute.content . end)
+		let cpt = cpt + 1
+	endfor
+
+	execute "normal! cc"
+	call append(line('.'), lines)
+	execute "normal! dd"
 endfunction
