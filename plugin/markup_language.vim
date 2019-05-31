@@ -1,6 +1,6 @@
-"if exists("g:loaded_markup_language") || &cp
-"	finish
-"endif
+if exists("g:loaded_markup_language") || &cp
+	finish
+endif
 
 let g:loaded_markup_language = 1
 let s:save_cpo = &cpo
