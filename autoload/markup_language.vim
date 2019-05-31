@@ -154,6 +154,8 @@ function! s:get_tag_under_cursor()
 			return tag
 		endif
 	endfor
+
+	return {}
 endfunction
 
 function! s:get_tag_attributes(content)
@@ -184,69 +186,6 @@ function! s:get_tag_attributes(content)
 
 	return attributes
 endfunction
-
-"function! s:get_tag_attributes(content)
-"	let content = s:strip_server_tags(a:content)
-"	let regex = ' .\{-}=".\{-}"\| .\{-}=''.\{-}'''
-"	let cpt = 0
-"	let attributes = []
-"
-"	while 1
-"		let match = matchstr(content, regex)
-"		let cpt += 1
-"
-"		if match == ''
-"			break
-"		endif
-"
-"		let start_position = match(content, regex, 0) + 1
-"		let end_position = len(match) + start_position - 2
-"		let content = substitute(content, regex, repeat('#', len(match)), '')
-"		let match = a:content[start_position:end_position]
-"
-"		call add(attributes, {
-"			\ 'content': match,
-"			\ 'start_position': start_position,
-"			\ 'end_position': end_position,
-"			\ })
-"	endwhile
-"
-"	echom attributes
-"
-"	"echom match
-"endfunction
-
-"	let content = s:strip_server_tags(a:content)
-"	" Counter that will be use to matchstr tags
-"	let cpt = 0
-"	" List of tags found
-"	let tags = []
-"	" Loop until we can't found new match tag
-"	" If match is empty the loop will be breaks
-"	while 1
-"		let cpt += 1
-"		" Match tags in the content
-"		let match = matchstr(content, '<[^<>]*>', 0, cpt)
-"		if match == ''
-"			break
-"		endif
-"		" Remove all attributes in match found
-"		" <p class="a"> will be p and </p> will be /p
-"		let name = matchstr(match, '<\zs/\?\%([[:alpha:]_:]\|[^\x00-\x7F]\)\%([-._:[:alnum:]]\|[^\x00-\x7F]\)*')
-"		let position = match(content, '<[^<>]*>', 0, cpt)
-"		" Add information about tag found
-"		" name: name of the tag that have been found (p or /p)
-"		" position: position start of the match
-"		" length: length of the match
-"		call add(tags, {
-"			\ 'name': name,
-"			\ 'position': position,
-"			\ 'length': len(match)
-"			\ })
-"	endwhile
-"	return tags
-
-
 
 " Replace the selection by the parsed content
 function! s:replace_selection(content)
@@ -478,34 +417,54 @@ function! markup_language#apply()
 	call s:replace_selection(lines)
 endfunction
 
+" Put attributes of an opening HTML tag on multiples lines.
 function! markup_language#attribute()
-	let line = line('.')
 	let tag = s:get_tag_under_cursor()
-	let content = tag.content
+	let position = s:pos('.')
+	let line = getline('.')
 
-	let line_indent = s:extract_indent(line)
-	let attr_indent = repeat(' ', len(tag.name) + tag.position + 1)
+	" Output warning message if no tags have been found
+	" Stop the process of the function by returning 0
+	if tag == {}
+		return s:display_warning("No html tag under cursor")
+	endif
 
-	let attributes = s:get_tag_attributes(content)
+	" Get attributes in tag
+	let attributes = s:get_tag_attributes(tag.content)
+
+	" Output warning message if no attribute or single one have been found
+	" Stop the process of the function by returning 0
+	if len(attributes) < 2
+		return s:display_warning("Not enough attribute into this html tag")
+	endif
+
+	" Define attribute and line indentations
+	let indentation = {
+		\ 'line': s:extract_indent(position.line),
+		\ 'attr': repeat(' ', len(tag.name) + 2)
+		\ }
+
+	echom indentation
+
+	" Define content before and after HTML tag
+	let content = {
+		\ 'before': strcharpart(line, 0, tag.position),
+		\ 'after': strcharpart(line, tag.position + tag.length, len(line))
+		\ }
+
+	" Extracting lines results by parse attributes of an HTML tags
 	let lines = []
 	let cpt = 0
-
-	"echom tag.position
-	let start_content = strcharpart(getline('.'), 0, tag.position)
-	let end_content = strcharpart(getline('.'), tag.position + tag.length, len(getline('.')))
-
 	for attribute in attributes
 		let start = ""
 		let end = ""
-		let indent = ""
+		let indent = indentation.line . indentation.attr
 
 		if cpt == 0
-			let start = start_content . "<" . tag.name . " "
+			let start = content.before . "<" . tag.name . " "
+			let indent = ""
 		elseif cpt == len(attributes) - 1
-			let indent = line_indent . attr_indent
-			let end = ">" . end_content
-		else
-			let indent = line_indent . attr_indent
+			let end = ">" . content.after
 		endif
 
 		call add(lines, start . indent . attribute.content . end)
@@ -513,6 +472,6 @@ function! markup_language#attribute()
 	endfor
 
 	execute "normal! cc"
-	call append(line('.'), lines)
+	call append(position.line, lines)
 	execute "normal! dd"
 endfunction
